@@ -4,46 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pressure Alarm Control Diagram</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/joint/3.5.2/joint.min.css" />
+    <script type="module">
+        import { Mermaid } from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.js';
+        Mermaid.initialize({ startOnLoad: true });
+    </script>
     <style>
-        .block {
-            background-color: #E8E8F0;
-            border-radius: 8px;
+        .mermaid {
+            background-color: #f9f9f9;
+            border-radius: 10px;
             padding: 10px;
-            position: relative;
-            margin: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
-        .header {
-            background-color: #D0D0E0;
-            padding: 5px;
-            border-radius: 8px 8px 0 0;
-            text-align: center;
+        .export-button {
+            margin: 20px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: red; /* Example color */
-        }
-        .io-slot {
-            margin-top: 5px;
+        .description-panel {
+            margin: 20px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div id="diagram" class="block">
-        <div class="header">Pressure Alarm Control</div>
-        <div class="icon"></div>
-        <div class="io-slot">NumericPoint: value (type) (status)</div>
-        <div class="io-slot">BooleanPoint: value (type) (status)</div>
-        <!-- Add other blocks here -->
+    <h1>Pressure Alarm Control Diagram</h1>
+    <button class="export-button" onclick="exportToPNG()">Export to PNG</button>
+    <div class="mermaid">
+        graph TD;
+            A[Room 101 DP Sensor] -->|Input| B[AHU Status];
+            A -->|Input| C[Occupancy Schedule];
+            B --> D[DP Setpoint (+0.03"wc)];
+            B --> E[DP Setpoint (-0.015"wc)];
+            D --> F[High Alarm (Occupied)];
+            E --> G[Low Alarm (Occupied)];
+            F --> H[Alarm Multiplexer];
+            G --> H;
+            C --> I[Sign Change Detector (Unoccupied)];
+            C --> J[Direction Change Alarm (Unoccupied)];
+            I --> H;
+            J --> H;
+            H --> K[Final Alarm Output];
+            F --> L[5-minute Delay Timer];
+            G --> M[30-minute Override Timer];
+            L --> N[AHU Override Command];
+            M --> N;
+            N --> O[Mode Select Logic];
+            O --> H;
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/joint/3.5.2/joint.min.js"></script>
+    <div class="description-panel">
+        <h2>Control Sequence Description</h2>
+        <p>This diagram represents the flow of control signals in the pressure alarm system, illustrating how the inputs from the Room 101 DP sensor, AHU status, and occupancy schedule influence the alarm outputs under different conditions.</p>
+    </div>
     <script>
-        // Initialize JointJS here for interactive features
+        function exportToPNG() {
+            const mermaidDiv = document.querySelector('.mermaid');
+            mermaidDiv.innerHTML = mermaidDiv.innerHTML; // Re-render to ensure it is up-to-date
+            mermaid.render('graphDiv', mermaidDiv.innerHTML, function(svgCode) {
+                const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(svgBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'pressure_alarm_control_diagram.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        }
     </script>
 </body>
 </html>
