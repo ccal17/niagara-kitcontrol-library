@@ -4,57 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pressure Alarm Control Diagram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/joint/3.5.2/joint.min.css" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-        }
         .block {
             background-color: #E8E8F0;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            margin: 10px 0;
+            border-radius: 8px;
+            padding: 10px;
+            position: relative;
+            margin: 10px;
         }
-        .block-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #ccc;
-            padding-bottom: 10px;
+        .header {
+            background-color: #D0D0E0;
+            padding: 5px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
         }
         .icon {
-            width: 30px;
-            height: 30px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            background-color: #ffcc00; /* Placeholder for colored icon */
+            background-color: red; /* Example color */
         }
-        .slots {
-            margin-top: 10px;
-        }
-        .slot {
-            margin: 5px 0;
-            border: 1px solid #ccc;
-            padding: 5px;
-            border-radius: 5px;
+        .io-slot {
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-
-    <div class="block">
-        <div class="block-header">
-            <h2>Pressure Alarm</h2>
-            <div class="icon"></div>
-        </div>
-        <div class="slots">
-            <div class="slot">Input Slot 1 (ok)</div>
-            <div class="slot">Input Slot 2 (def)</div>
-            <div class="slot">Output Slot 1 (null)</div>
-            <div class="slot">Output Slot 2 (ok)</div>
-            <!-- Add more slots as needed -->
-        </div>
+    <div id="diagram" class="block">
+        <div class="header">Pressure Alarm Control</div>
+        <div class="icon"></div>
+        <div class="io-slot">NumericPoint: value (type) (status)</div>
+        <div class="io-slot">BooleanPoint: value (type) (status)</div>
+        <!-- Add other blocks here -->
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/joint/3.5.2/joint.min.js"></script>
+    <script>
+        // Initialize JointJS here for interactive features
+    </script>
 </body>
 </html>
