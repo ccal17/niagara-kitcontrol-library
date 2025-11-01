@@ -3,380 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tridium Niagara Pressure Alarm Control Diagram</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.6.2/joint.min.css" />
+    <title>Pressure Alarm Control Diagram</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        .block {
+            background-color: #E8E8F0;
+            border-radius: 15px;
             padding: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
         }
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        h1 {
-            color: #1a73e8;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        .subtitle {
-            color: #5f6368;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .controls {
+        .block-header {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        button {
-            padding: 10px 20px;
-            background: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #1557b0;
-        }
-        button:active {
-            transform: scale(0.98);
-        }
-        #paper-container {
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
-            background: #fafafa;
-            overflow: auto;
-            position: relative;
-        }
-        .legend {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 4px;
-        }
-        .legend-item {
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            font-size: 13px;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
         }
-        .legend-color {
+        .icon {
             width: 30px;
-            height: 20px;
-            border-radius: 3px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ffcc00; /* Placeholder for colored icon */
+        }
+        .slots {
+            margin-top: 10px;
+        }
+        .slot {
+            margin: 5px 0;
             border: 1px solid #ccc;
-        }
-        .info-panel {
-            margin-top: 15px;
-            padding: 15px;
-            background: #e8f4fd;
-            border-left: 4px solid #1a73e8;
-            border-radius: 4px;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-        .info-panel h3 {
-            margin-bottom: 10px;
-            color: #1a73e8;
-        }
-        .info-panel ul {
-            margin-left: 20px;
+            padding: 5px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Tridium Niagara kitControl - Pressure Alarm Control Sequence</h1>
-        <p class="subtitle">Interactive Block Diagram for Room Differential Pressure Monitoring</p>
-        
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background: #4A90E2;"></div>
-                <span>Input Points</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #50C878;"></div>
-                <span>Logic Blocks</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #FF9500;"></div>
-                <span>Control Blocks</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #E74C3C;"></div>
-                <span>Alarm Blocks</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #9B59B6;"></div>
-                <span>Setpoint Blocks</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background: #34495E;"></div>
-                <span>Timer Blocks</span>
-            </div>
+
+    <div class="block">
+        <div class="block-header">
+            <h2>Pressure Alarm</h2>
+            <div class="icon"></div>
         </div>
-
-        <div class="controls">
-            <button id="export-png">📥 Export to PNG</button>
-            <button id="zoom-in">🔍+ Zoom In</button>
-            <button id="zoom-out">🔍- Zoom Out</button>
-            <button id="reset-view">🔄 Reset View</button>
-            <button id="auto-layout">📐 Auto Layout</button>
-        </div>
-
-        <div id="paper-container"></div>
-
-        <div class="info-panel">
-            <h3>Control Sequence Description</h3>
-            <ul>
-                <li><strong>Occupied Mode (AHU Running):</strong> High alarm at +0.03"wc above setpoint, Low alarm at -0.015"wc below setpoint</li>
-                <li><strong>Unoccupied Mode (AHU Not Running):</strong> Alarms trigger only on pressure direction change (positive to negative or vice versa)</li>
-                <li><strong>Override Logic:</strong> If alarm persists for 5 minutes in unoccupied mode, AHU runs for 30 minutes, then returns to schedule-based operation</li>
-            </ul>
+        <div class="slots">
+            <div class="slot">Input Slot 1 (ok)</div>
+            <div class="slot">Input Slot 2 (def)</div>
+            <div class="slot">Output Slot 1 (null)</div>
+            <div class="slot">Output Slot 2 (ok)</div>
+            <!-- Add more slots as needed -->
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.1/backbone-min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jointjs/3.6.2/joint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <script>
-        // Initialize JointJS
-        const namespace = joint.shapes;
-        const graph = new joint.dia.Graph({}, { cellNamespace: namespace });
-        
-        const paper = new joint.dia.Paper({
-            el: document.getElementById('paper-container'),
-            model: graph,
-            width: 1550,
-            height: 900,
-            gridSize: 10,
-            drawGrid: { name: 'mesh', args: { color: '#e0e0e0' } },
-            background: { color: '#fafafa' },
-            cellViewNamespace: namespace,
-            interactive: { elementMove: true },
-            defaultLink: new joint.shapes.standard.Link({
-                attrs: { line: { stroke: '#6c757d', strokeWidth: 2 } }
-            })
-        });
-
-        // Custom block creation function
-        function createBlock(id, label, type, position, blockType = 'NumericPoint') {
-            const colors = {
-                input: '#4A90E2',
-                logic: '#50C878',
-                control: '#FF9500',
-                alarm: '#E74C3C',
-                setpoint: '#9B59B6',
-                timer: '#34495E'
-            };
-
-            const block = new joint.shapes.standard.Rectangle({
-                id: id,
-                position: position,
-                size: { width: 140, height: 70 },
-                attrs: {
-                    body: {
-                        fill: colors[type],
-                        stroke: '#333',
-                        strokeWidth: 2,
-                        rx: 5,
-                        ry: 5
-                    },
-                    label: {
-                        text: label + '\n[' + blockType + ']',
-                        fill: 'white',
-                        fontSize: 11,
-                        fontWeight: 'bold',
-                        textAnchor: 'middle',
-                        textVerticalAnchor: 'middle'
-                    }
-                }
-            });
-            
-            return block;
-        }
-
-        // Create connection
-        function createLink(source, target, label = '') {
-            const link = new joint.shapes.standard.Link({
-                source: { id: source },
-                target: { id: target },
-                attrs: {
-                    line: {
-                        stroke: '#6c757d',
-                        strokeWidth: 2,
-                        targetMarker: {
-                            type: 'path',
-                            d: 'M 10 -5 0 0 10 5 z',
-                            fill: '#6c757d'
-                        }
-                    }
-                },
-                labels: label ? [{
-                    attrs: {
-                        text: { text: label, fill: '#333', fontSize: 10 },
-                        rect: { fill: 'white', stroke: '#ccc', strokeWidth: 1, rx: 3, ry: 3 }
-                    }
-                }] : []
-            });
-            return link;
-        }
-
-        // Build the diagram
-        const blocks = [];
-
-        // Input points
-        blocks.push(createBlock('room101-dp', 'Room 101\nDiff Pressure', 'input', { x: 50, y: 100 }, 'NumericPoint'));
-        blocks.push(createBlock('ahu-status', 'AHU Running\nStatus', 'input', { x: 50, y: 250 }, 'BooleanPoint'));
-        blocks.push(createBlock('schedule', 'Occupancy\nSchedule', 'input', { x: 50, y: 400 }, 'BooleanPoint'));
-
-        // Setpoints
-        blocks.push(createBlock('dp-setpoint', 'DP Setpoint\n(Base)', 'setpoint', { x: 250, y: 100 }, 'NumericWritable'));
-        blocks.push(createBlock('high-offset', 'High Offset\n+0.03"wc', 'setpoint', { x: 450, y: 50 }, 'NumericPoint'));
-        blocks.push(createBlock('low-offset', 'Low Offset\n-0.015"wc', 'setpoint', { x: 450, y: 150 }, 'NumericPoint'));
-
-        // Logic - Occupied Mode
-        blocks.push(createBlock('add-high', 'Add\n(SP + High)', 'logic', { x: 650, y: 50 }, 'Add'));
-        blocks.push(createBlock('add-low', 'Add\n(SP + Low)', 'logic', { x: 650, y: 150 }, 'Add'));
-        blocks.push(createBlock('high-alarm-occ', 'High Alarm\n(Occupied)', 'alarm', { x: 850, y: 50 }, 'HighAlarm'));
-        blocks.push(createBlock('low-alarm-occ', 'Low Alarm\n(Occupied)', 'alarm', { x: 850, y: 150 }, 'LowAlarm'));
-
-        // Logic - Unoccupied Mode
-        blocks.push(createBlock('sign-detect', 'Sign Change\nDetector', 'logic', { x: 450, y: 350 }, 'Logic'));
-        blocks.push(createBlock('direction-alarm', 'Direction\nChange Alarm', 'alarm', { x: 650, y: 350 }, 'BooleanAlarm'));
-
-        // Timer and Override Logic
-        blocks.push(createBlock('alarm-delay', '5 Min\nAlarm Delay', 'timer', { x: 850, y: 350 }, 'Delay'));
-        blocks.push(createBlock('override-timer', '30 Min\nOverride Timer', 'timer', { x: 1050, y: 350 }, 'Timer'));
-        blocks.push(createBlock('ahu-override', 'AHU Override\nCommand', 'control', { x: 1250, y: 350 }, 'BooleanWritable'));
-
-        // Mode Selection
-        blocks.push(createBlock('mode-select', 'Mode Select\n(Occ/Unocc)', 'logic', { x: 250, y: 250 }, 'Or'));
-        blocks.push(createBlock('alarm-mux', 'Alarm\nMultiplexer', 'logic', { x: 1050, y: 150 }, 'Switch'));
-        blocks.push(createBlock('final-alarm', 'Combined\nAlarm Output', 'alarm', { x: 1350, y: 150 }, 'BooleanPoint'));
-
-        // Add all blocks to graph
-        blocks.forEach(block => graph.addCell(block));
-
-        // Create connections
-        const links = [
-            // Input to setpoint and logic
-            createLink('room101-dp', 'sign-detect', 'DP Value'),
-            createLink('room101-dp', 'high-alarm-occ', 'DP Value'),
-            createLink('room101-dp', 'low-alarm-occ', 'DP Value'),
-            createLink('dp-setpoint', 'add-high', 'Setpoint'),
-            createLink('dp-setpoint', 'add-low', 'Setpoint'),
-            
-            // Setpoint calculations
-            createLink('high-offset', 'add-high', '+0.03'),
-            createLink('low-offset', 'add-low', '-0.015'),
-            createLink('add-high', 'high-alarm-occ', 'High Limit'),
-            createLink('add-low', 'low-alarm-occ', 'Low Limit'),
-            
-            // Mode logic
-            createLink('ahu-status', 'mode-select', 'AHU State'),
-            createLink('schedule', 'mode-select', 'Schedule'),
-            createLink('mode-select', 'alarm-mux', 'Mode'),
-            
-            // Unoccupied alarm path
-            createLink('sign-detect', 'direction-alarm', 'Dir Change'),
-            createLink('direction-alarm', 'alarm-delay', 'Alarm'),
-            createLink('alarm-delay', 'override-timer', 'Delayed'),
-            createLink('override-timer', 'ahu-override', 'Override'),
-            createLink('ahu-override', 'mode-select', 'Override'),
-            
-            // Alarm multiplexing
-            createLink('high-alarm-occ', 'alarm-mux', 'Occ High'),
-            createLink('low-alarm-occ', 'alarm-mux', 'Occ Low'),
-            createLink('direction-alarm', 'alarm-mux', 'Unocc'),
-            createLink('alarm-mux', 'final-alarm', 'Alarm Out')
-        ];
-
-        links.forEach(link => graph.addCell(link));
-
-        // Zoom controls
-        let scale = 1;
-        document.getElementById('zoom-in').addEventListener('click', () => {
-            scale = Math.min(scale + 0.1, 2);
-            paper.scale(scale);
-        });
-
-        document.getElementById('zoom-out').addEventListener('click', () => {
-            scale = Math.max(scale - 0.1, 0.5);
-            paper.scale(scale);
-        });
-
-        document.getElementById('reset-view').addEventListener('click', () => {
-            scale = 1;
-            paper.scale(scale);
-            paper.translate(0, 0);
-        });
-
-        // Auto layout using JointJS layout
-        document.getElementById('auto-layout').addEventListener('click', () => {
-            joint.layout.DirectedGraph.layout(graph, {
-                rankDir: 'LR',
-                ranker: 'longest-path',
-                nodeSep: 80,
-                edgeSep: 50,
-                rankSep: 150
-            });
-        });
-
-        // Export to PNG
-        document.getElementById('export-png').addEventListener('click', () => {
-            paper.hideTools();
-            paper.toPNG((dataURL) => {
-                const link = document.createElement('a');
-                link.download = 'pressure-alarm-control-diagram.png';
-                link.href = dataURL;
-                link.click();
-            }, {
-                padding: 10,
-                backgroundColor: 'white'
-            });
-        });
-
-        // Enable panning
-        let isPanning = false;
-        let startX, startY;
-
-        paper.on('blank:pointerdown', (evt) => {
-            isPanning = true;
-            startX = evt.clientX;
-            startY = evt.clientY;
-        });
-
-        paper.on('blank:pointermove', (evt) => {
-            if (isPanning) {
-                const dx = evt.clientX - startX;
-                const dy = evt.clientY - startY;
-                paper.translate(dx, dy);
-                startX = evt.clientX;
-                startY = evt.clientY;
-            }
-        });
-
-        paper.on('blank:pointerup', () => {
-            isPanning = false;
-        });
-    </script>
 </body>
 </html>
